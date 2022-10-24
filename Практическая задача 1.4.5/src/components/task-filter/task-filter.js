@@ -3,18 +3,17 @@ import PropTypes from 'prop-types'
 import './task-filter.css'
 export default class TaskFilter extends React.Component {
   render() {
-    const { filterActive, filterShowAll, filterShowCompleted } = this.props
-
+    const { setCurrButton } = this.props
     return (
       <ul className="filters">
         <li>
-          <button onClick={filterShowAll}>All</button>
+          <button onClick={() => setCurrButton('all')}>All</button>
         </li>
         <li>
-          <button onClick={filterActive}>Active</button>
+          <button onClick={() => setCurrButton('active')}>Active</button>
         </li>
         <li>
-          <button onClick={filterShowCompleted}>Completed</button>
+          <button onClick={() => setCurrButton('completed')}>Completed</button>
         </li>
       </ul>
     )

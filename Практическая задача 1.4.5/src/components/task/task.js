@@ -24,18 +24,17 @@ class Task extends React.Component {
     })
   }
   render() {
-    const { discription, onDelete, completeItem, editTask } = this.props
-    const { time } = this.state
-    // let classNames = "view";
-    // if (complete) {
-    //   classNames = "completed";
-    // }
+    const { discription, onDelete, completeItem, editTask, complete } = this.props
+    let checked = false
+    if (complete) {
+      checked = true
+    }
     return (
       <div className="view">
-        <input className="toggle" type="checkbox" onClick={completeItem} />
-        <label>
+        <input className="toggle" type="checkbox" onChange={completeItem} checked={checked} />
+        <label onClick={completeItem}>
           <span className="description">{discription}</span>
-          <span className="created">created {time}</span>
+          <span className="created">created {this.state.time}</span>
         </label>
         <button className="icon icon-edit" onClick={editTask}></button>
         <button className="icon icon-destroy" onClick={onDelete}></button>

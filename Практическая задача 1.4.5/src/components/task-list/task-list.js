@@ -1,19 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Task from '../task'
+import Task from '../Task'
 import './task-list.css'
 export default class TaskList extends React.Component {
   render() {
-    const { todos, onDeleted, completeItem, editTask, setNewDiscription, onSubmit } = this.props
+    const { todos, onDeleted, completeItem, editTask, setNewDiscription, onSubmit, time } = this.props
     const elements = todos.map((item) => {
-      const { id, discription, complete, filterComplete, editing } = item
+      const { id, discription, complete, editing } = item
       let classNames = ''
       if (complete) {
         classNames = 'completed'
-      }
-      if (filterComplete) {
-        classNames += ' hidden'
       }
       if (editing) {
         classNames = 'editing'
@@ -21,7 +18,9 @@ export default class TaskList extends React.Component {
       return (
         <li key={id} id={id} className={classNames}>
           <Task
+            time={time}
             discription={discription}
+            complete={complete}
             onDelete={() => onDeleted(id)}
             completeItem={() => completeItem(id)}
             editTask={() => editTask(id)}
