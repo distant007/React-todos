@@ -3,7 +3,7 @@ import React from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
 import Header from '../Header'
-import TaskList from '../Task-list'
+import TaskList from '../TaskList'
 import Footer from '../Footer'
 
 import './app.css'
@@ -11,7 +11,7 @@ import './app.css'
 export default class ToDoApp extends React.Component {
   state = {
     todoData: [this.createItem('Completed task'), this.createItem('Editing task'), this.createItem('Active task')],
-    filterSetButton: 'all',
+    filterSetButton: 'All',
   }
   addItem = (text) => {
     this.setState(({ todoData }) => {
@@ -51,11 +51,11 @@ export default class ToDoApp extends React.Component {
   filter(filter) {
     const { todoData } = this.state
     switch (filter) {
-    case 'active':
+    case 'Active':
       return todoData.filter((el) => !el.complete)
-    case 'completed':
+    case 'Completed':
       return todoData.filter((el) => el.complete)
-    case 'all':
+    case 'All':
     default:
       return todoData
     }
@@ -67,46 +67,19 @@ export default class ToDoApp extends React.Component {
       }
     })
   }
-  editTask = (id) => {
+  setFilter = (button) => {
+    this.setState({filterSetButton: button})
+  }
+  setNewDiscription = (text, id) => {
     this.setState(({ todoData }) => {
       const currId = todoData.findIndex((el) => el.id === id)
 
       const currEl = todoData[currId]
-      const newEl = { ...currEl, editing: !currEl.editing }
+      const newEl = { ...currEl, discription: text }
 
       const newArr = [...todoData.slice(0, currId), newEl, ...todoData.slice(currId + 1)]
       return {
         todoData: newArr,
-      }
-    })
-  }
-  setNewDiscription = (e, id) => {
-    this.setState(({ todoData }) => {
-      const currId = todoData.findIndex((el) => el.id === id)
-      const currEl = todoData[currId]
-      const newEl = { ...currEl, discription: e.target.value }
-      const newArr = [...todoData.slice(0, currId), newEl, ...todoData.slice(currId + 1)]
-      return {
-        todoData: newArr,
-      }
-    })
-  }
-  onSubmit = (e, id) => {
-    e.preventDefault()
-    this.setState(({ todoData }) => {
-      const currId = todoData.findIndex((el) => el.id === id)
-      const currEl = todoData[currId]
-      const newEl = { ...currEl, editing: !currEl.editing }
-      const newArr = [...todoData.slice(0, currId), newEl, ...todoData.slice(currId + 1)]
-      return {
-        todoData: newArr,
-      }
-    })
-  }
-  setCurrButton = (button) => {
-    this.setState(() => {
-      return {
-        filterSetButton: button,
       }
     })
   }
@@ -123,12 +96,10 @@ export default class ToDoApp extends React.Component {
             time={time}
             onDeleted={this.deleteItem}
             completeItem={this.onToggleComplete}
-            editTask={this.editTask}
             setNewDiscription={this.setNewDiscription}
-            onSubmit={this.onSubmit}
           />
         </section>
-        <Footer completeCount={completeCount} setCurrButton={this.setCurrButton} clearCompleted={this.clearCompleted} />
+        <Footer completeCount={completeCount} setFilter={this.setFilter} clearCompleted={this.clearCompleted} filterSetButton={filterSetButton}  />
       </section>
     )
   }

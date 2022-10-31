@@ -1,15 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import TaskFilter from '../Task-filter'
+import TaskFilter from '../TaskFilter'
 import './footer.css'
 export default class Footer extends React.Component {
   render() {
-    const { completeCount, clearCompleted, setCurrButton } = this.props
+    const { completeCount, clearCompleted, setFilter, filterSetButton } = this.props
     return (
       <footer className="footer">
         <span className="todo-count">{completeCount} items left</span>
-        <TaskFilter setCurrButton={(button) => setCurrButton(button)} />
+        <TaskFilter setFilter={setFilter} filterSetButton={filterSetButton} />
         <button className="clear-completed" onClick={clearCompleted}>
           Clear completed
         </button>

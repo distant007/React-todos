@@ -1,6 +1,6 @@
 import React from 'react'
 
-import NewTaskForm from '../New-task-form'
+import NewTaskForm from '../NewTaskForm'
 import './header.css'
 export default class Header extends React.Component {
   render() {

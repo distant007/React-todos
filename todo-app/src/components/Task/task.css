@@ -23,10 +23,6 @@
   display: block;
   margin-bottom: 0;
 }
-
-.todo-list .editing .view {
-  display: none;
-}
 .todo-list li .toggle {
   text-align: center;
   width: 40px;
