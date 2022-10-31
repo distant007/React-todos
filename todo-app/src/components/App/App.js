@@ -26,6 +26,7 @@ export default class ToDoApp extends React.Component {
       id: uuidv4(),
       complete: false,
       editing: false,
+      creationTime: new Date(),
     }
   }
   deleteItem = (id) => {
@@ -84,7 +85,7 @@ export default class ToDoApp extends React.Component {
     })
   }
   render() {
-    const { todoData, filterSetButton, time } = this.state
+    const { todoData, filterSetButton } = this.state
     const completeCount = todoData.filter((el) => !el.complete).length
     const filteredTodos = this.filter(filterSetButton)
     return (
@@ -93,7 +94,6 @@ export default class ToDoApp extends React.Component {
         <section className="main">
           <TaskList
             todos={filteredTodos}
-            time={time}
             onDeleted={this.deleteItem}
             completeItem={this.onToggleComplete}
             setNewDiscription={this.setNewDiscription}

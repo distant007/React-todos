@@ -4,27 +4,20 @@ import { formatDistanceToNow } from 'date-fns'
 import './task.css'
 
 class Task extends React.Component {
-  date = new Date()
   state = {
-    time: formatDistanceToNow(this.date, {
+    time: formatDistanceToNow(this.props.creationTime, {
       includeSeconds: true,
     }),
     editText: this.props.discription,
     editing: false,
   }
-  componentDidMount() {
-    this.timerID = setInterval(() => this.tick(), 1000)
-  }
-  componentWillUnmount() {
-    clearInterval(this.timerID)
-  }
-  tick() {
-    this.setState({
-      time: formatDistanceToNow(this.date, {
-        includeSeconds: true,
-      }),
-    })
-  }
+  // tick() {
+  //   this.setState({
+  //     time: formatDistanceToNow(this.props.creationTime, {
+  //       includeSeconds: true,
+  //     }),
+  //   })
+  // }
   NewDiscription = (e) => {
     this.setState(() => {
       return {
@@ -49,7 +42,7 @@ class Task extends React.Component {
   }
   render() {
     const { onDelete, completeItem, complete, setNewDiscription, id } = this.props
-    const { editing, editText } = this.state
+    const { editing, editText, time } = this.state
     if (editing) {
       return (
         <form
@@ -74,7 +67,7 @@ class Task extends React.Component {
           <input className="toggle" type="checkbox" onChange={completeItem} checked={complete} />
           <label onClick={completeItem}>
             <span className="description">{editText}</span>
-            <span className="created">created {this.state.time}</span>
+            <span className="created">created {time}</span>
           </label>
           <button className="icon icon-edit" onClick={this.editingTask}></button>
           <button className="icon icon-destroy" onClick={onDelete}></button>
