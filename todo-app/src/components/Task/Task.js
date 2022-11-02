@@ -26,6 +26,9 @@ class Task extends React.Component {
     })
   }
   editingTask = () => {
+    if (this.props.complete) {
+      this.props.completeItem()
+    }
     this.setState(() => {
       return {
         editing: true,

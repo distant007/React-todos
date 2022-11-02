@@ -25,7 +25,6 @@ export default class ToDoApp extends React.Component {
       discription: text,
       id: uuidv4(),
       complete: false,
-      editing: false,
       creationTime: new Date(),
     }
   }
@@ -69,7 +68,7 @@ export default class ToDoApp extends React.Component {
     })
   }
   setFilter = (button) => {
-    this.setState({filterSetButton: button})
+    this.setState({ filterSetButton: button })
   }
   setNewDiscription = (text, id) => {
     this.setState(({ todoData }) => {
@@ -99,7 +98,12 @@ export default class ToDoApp extends React.Component {
             setNewDiscription={this.setNewDiscription}
           />
         </section>
-        <Footer completeCount={completeCount} setFilter={this.setFilter} clearCompleted={this.clearCompleted} filterSetButton={filterSetButton}  />
+        <Footer
+          completeCount={completeCount}
+          setFilter={this.setFilter}
+          clearCompleted={this.clearCompleted}
+          filterSetButton={filterSetButton}
+        />
       </section>
     )
   }
