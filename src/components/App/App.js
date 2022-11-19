@@ -10,22 +10,27 @@ import './app.css'
 
 export default class ToDoApp extends React.Component {
   state = {
-    todoData: [this.createItem('Completed task'), this.createItem('Editing task'), this.createItem('Active task')],
+    todoData: [this.createItem('Completed task', 12, 25), this.createItem('Editing task', 12, 25), this.createItem('Active task', 12, 25)],
     filterSetButton: 'All',
   }
-  addItem = (text) => {
+  addItem = (text, min, sec) => {
     this.setState(({ todoData }) => {
       return {
-        todoData: [...todoData, this.createItem(text)],
+        todoData: [...todoData, this.createItem(text, min, sec)],
       }
     })
   }
-  createItem(text) {
+  createItem(text, min, sec) {
+    if(min.length > 2){
+      min = '0'
+    }
     return {
       discription: text,
       id: uuidv4(),
       complete: false,
       creationTime: new Date(),
+      min: min,
+      sec: sec,
     }
   }
   deleteItem = (id) => {
@@ -83,6 +88,11 @@ export default class ToDoApp extends React.Component {
       }
     })
   }
+  onTimeChange = (id, min, sec) => {
+    this.setState(({ todoData }) => ({
+      todoData: todoData.map((item) => (id === item.id ? { ...item, min: min, sec: sec } : { ...item })),
+    }))
+  }
   render() {
     const { todoData, filterSetButton } = this.state
     const completeCount = todoData.filter((el) => !el.complete).length
@@ -96,6 +106,7 @@ export default class ToDoApp extends React.Component {
             onDeleted={this.deleteItem}
             completeItem={this.onToggleComplete}
             setNewDiscription={this.setNewDiscription}
+            onTimeChange={this.onTimeChange}
           />
         </section>
         <Footer

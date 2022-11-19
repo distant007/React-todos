@@ -5,15 +5,18 @@ import Task from '../Task'
 import './task-list.css'
 export default class TaskList extends React.Component {
   render() {
-    const { todos, onDeleted, completeItem, setNewDiscription } = this.props
+    const { todos, onDeleted, completeItem, setNewDiscription, onTimeChange } = this.props
     const elements = todos.map((item) => {
-      const { id, discription, complete, editing, creationTime } = item
+      const { id, discription, complete, editing, creationTime, min, sec } = item
       return (
         <li key={id} id={id} className={complete ? 'completed' : 'editing'}>
           <Task
             creationTime={creationTime}
             discription={discription}
+            onTimeChange={onTimeChange}
             complete={complete}
+            min={min}
+            sec={sec}
             onDelete={() => onDeleted(id)}
             completeItem={() => completeItem(id)}
             setNewDiscription={setNewDiscription}
