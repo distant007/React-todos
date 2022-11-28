@@ -1,84 +1,63 @@
-import React from 'react'
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { formatDistanceToNow } from 'date-fns'
 
 import Timer from '../Timer'
 
-import './task.css'
+import './Task.css'
 
-class Task extends React.Component {
-  state = {
-    time: formatDistanceToNow(this.props.creationTime, {
-      includeSeconds: true,
-    }),
-    editText: this.props.discription,
-    editing: false,
+const Task = (props) => {
+  const time = formatDistanceToNow(props.creationTime, {
+    includeSeconds: true,
+  })
+
+  const [editText, setEditText] = useState(props.discription)
+  const [editing, setEditing] = useState(false)
+
+  const newDiscription = (e) => {
+    setEditText(e.target.value)
   }
-  newDiscription = (e) => {
-    this.setState(() => {
-      return {
-        editText: e.target.value,
-      }
-    })
-  }
-  editingTask = () => {
-    if (this.props.complete) {
-      this.props.completeItem()
+  const editingTask = () => {
+    if (props.complete) {
+      props.completeItem()
     }
-    this.setState(() => {
-      return {
-        editing: true,
-      }
-    })
+    setEditing(true)
   }
-  submitEdit = (e) => {
+  const submitEdit = (e) => {
     e.preventDefault()
-    this.setState(() => {
-      return {
-        editing: false,
-      }
-    })
+    setEditing(false)
   }
-  render() {
-    const { onDelete, completeItem, complete, setNewDiscription, id, discription, min, sec, onTimeChange } = this.props
-    const { editing, editText, time } = this.state
-    const editInput = editing ? (
-      <Editing
-        setNewDiscription={setNewDiscription}
-        id={id}
-        editText={editText}
-        newDiscription={this.newDiscription}
-        submitEdit={this.submitEdit}
-      />
-    ) : null
-    const view = !editing ? (
-      <View
-        completeItem={completeItem}
-        discription={discription}
-        min={min}
-        sec={sec}
-        time={time}
-        onDelete={onDelete}
-        complete={complete}
-        editingTask={this.editingTask}
-        id={id}
-        onTimeChange={onTimeChange}
-      />
-    ) : null
+  const { onDelete, completeItem, complete, setNewDiscription, id, discription, min, sec, onTimeChange } = props
+  const editInput = editing ? (
+    <Editing
+      setNewDiscription={setNewDiscription}
+      id={id}
+      editText={editText}
+      newDiscription={newDiscription}
+      submitEdit={submitEdit}
+    />
+  ) : null
+  const view = !editing ? (
+    <View
+      completeItem={completeItem}
+      discription={discription}
+      min={min}
+      sec={sec}
+      time={time}
+      onDelete={onDelete}
+      complete={complete}
+      editingTask={editingTask}
+      id={id}
+      onTimeChange={onTimeChange}
+    />
+  ) : null
 
-    return (
-      <div>
-        {editInput}
-        {view}
-      </div>
-    )
-  }
-  static defaultProps = {
-    completeItem: () => {},
-  }
-  static propTypes = {
-    completeItem: PropTypes.func,
-  }
+  return (
+    <div>
+      {editInput}
+      {view}
+    </div>
+  )
 }
 const Editing = ({ setNewDiscription, editText, id, newDiscription, submitEdit }) => {
   return (
@@ -108,5 +87,11 @@ const View = ({ completeItem, discription, min, sec, time, onDelete, complete, e
       <button className="icon icon-destroy" onClick={onDelete}></button>
     </div>
   )
+}
+Task.defaultProps = {
+  completeItem: () => {},
+}
+Task.propTypes = {
+  completeItem: PropTypes.func,
 }
 export default Task

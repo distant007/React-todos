@@ -1,75 +1,50 @@
-import { Component } from 'react'
+import { useState } from 'react'
+import { useInterval } from 'use-interval'
+const Timer = (props) => {
+  const [min, setMin] = useState(props.min)
+  const [sec, setSec] = useState(props.sec)
+  const [isRunning, setIsRunning] = useState(false)
 
-export default class Timer extends Component {
-  state = {
-    timerSwitch: null,
-    min: this.props.min,
-    sec: this.props.sec,
-  }
-  startTimer = () => {
-    if (this.state.timerSwitch === null && this.props.complete === false) {
-      this.setState(() => {
-        return {
-          timerSwitch: setInterval(this.timer, 1000),
-        }
-      })
+  const timerTodo = () => {
+    let second = Number(sec)
+    let minutes = Number(min)
+    const { onTimeChange, id } = props
+    if (props.complete) {
+      setIsRunning(false)
     }
-  }
-  stopTimer = () => {
-    clearInterval(this.state.timerSwitch)
-    this.setState(() => {
-      return {
-        timerSwitch: null,
-      }
-    })
-  }
-  timer = () => {
-    let second = Number(this.state.sec)
-    let min = Number(this.state.min)
-    const { onTimeChange, id } = this.props
-    if (this.props.complete) {
-      clearInterval(this.state.timerSwitch)
-      this.setState(() => {
-        return {
-          timerSwitch: null,
-        }
-      })
-    }
-    if (second !== 0 && min >= 0) {
+    if (second !== 0 && minutes >= 0) {
       second--
-      this.setState(() => {
-        return {
-          sec: second,
-        }
-      })
-    } else if (min === 0 && second === 0) {
-      clearInterval(this.state.timerSwitch)
-      this.setState(() => {
-        return {
-          min: 0,
-          sec: 0,
-          timerSwitch: null,
-        }
-      })
+      setSec(second)
+    } else if (minutes === 0 && second === 0) {
+      setIsRunning(false)
+      setMin(0)
+      setSec(0)
     } else {
-      min--
-      this.setState(() => {
-        return {
-          sec: 59,
-          min: min,
-        }
-      })
+      minutes--
+      setSec(59)
+      setMin(minutes)
     }
-    onTimeChange(id, min, second)
+    onTimeChange(id, minutes, second)
   }
-  render() {
-    const { min, sec } = this.state
-    return (
-      <span className="description">
-        <button className="icon icon-play" onClick={this.startTimer}></button>
-        <button className="icon icon-pause" onClick={this.stopTimer}></button>
-        {min}:{sec}
-      </span>
-    )
+  useInterval(
+    () => {
+      timerTodo()
+    },
+    isRunning ? 1000 : null
+  )
+  const startTimer = () => {
+    setIsRunning(true)
   }
+  const stopTimer = () => {
+    setIsRunning(false)
+  }
+  return (
+    <span className="description">
+      <button className="icon icon-play" onClick={startTimer}></button>
+      <button className="icon icon-pause" onClick={stopTimer}></button>
+      {min}:{sec}
+    </span>
+  )
 }
+
+export default Timer
